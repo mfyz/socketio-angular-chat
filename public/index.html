@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html ng-app="ChatApp">
+<head>
+    <title>Chat</title>
+    <meta charset="utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-sanitize.min.js"></script>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+    <div class="container" ng-controller="AppController">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Chat App</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <h3>Messages</h3>
+                <div class="overflowable">
+                    <div class="content">
+                        <div ng-repeat="message in messages" class="messages">
+                            <p ng-show="message.type == 'message'" class="{{message.user == session.username ? 'owner' : ''}}">
+                                <b>{{message.user}}</b>: <span ng-bind-html="message.text"></span>
+                            </p>
+                            <p ng-show="message.type == 'notification'" ng-bind-html="message.text"></p>
+                        </div>
+                    </div>
+                    <form ng-submit="compose_message()">
+                        <div class="toolbar">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Message" ng-model="compose_text">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" type="submit">Send</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <h3>
+                    Users Online
+                    <span ng-show="session.users">({{session.users.length}})</span>
+                </h3>
+                <div class="overflowable">
+                    <div class="content">
+                        <ul class="userlist">
+                            <li ng-repeat="user in session.users">
+                                {{user}}
+                                <span ng-show="user == session.username">(you)</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+    <script src="/client.js"></script>
+</body>
+</html>
